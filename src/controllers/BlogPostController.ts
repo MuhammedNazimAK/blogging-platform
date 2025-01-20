@@ -2,6 +2,7 @@ import { Response } from "express";
 import { createBlogPost, getBlogPosts, updateBlogPost, deleteBlogPost } from "../application/services/BlogPostService";
 import { RequestWithUser } from "../middlewares/authMiddleware";
 import STATUS_CODES from "../shared/constants/statusCodes";
+import { UploadedFile } from "express-fileupload";
 
 
 
@@ -10,7 +11,14 @@ export const createBlogPostController = async (req: RequestWithUser, res: Respon
 
     const { title, content } = req.body;
     const userId = req.user.id;
-    const blogPost = await createBlogPost(title, content, userId);
+
+    if (!req.files || !req.files.image) {
+      res.status(STATUS_CODES.BAD_REQUEST).json({ message: "Image is required." });
+      return;
+    }
+
+    const image = req.files?.image as UploadedFile | null;
+    const blogPost = await createBlogPost(title, content, userId, image);
     
     res.status(STATUS_CODES.CREATED).json({ message: "Blog post created", blogPost });
 
@@ -39,7 +47,9 @@ export const updateBlogPostController = async (req: RequestWithUser, res: Respon
   try {
     const { id } = req.params;
     const { title, content } = req.body;
-    const blogPost = await updateBlogPost(id, title, content);
+
+    const image = req.files?.image as UploadedFile | null;
+    const blogPost = await updateBlogPost(id, title, content, image);
     
     res.status(STATUS_CODES.OK).json({ message: "Blog post updated", blogPost });
 

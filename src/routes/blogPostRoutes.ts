@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { createBlogPostController, getBlogPostsController, updateBlogPostController, deleteBlogPostController } from "../controllers/BlogPostController";
 import { authMiddleware } from "../middlewares/authMiddleware";
+import fileUpload from "express-fileupload";
 
 
 const router = Router();

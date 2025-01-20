@@ -17,6 +17,9 @@ export class BlogPost {
   @Column("text")
   content: string | undefined;
 
+  @Column({ type: "varchar", nullable: true })
+  imageUrl: string | undefined; 
+
   @Column("varchar", { default: false })
   published: boolean | undefined;
 
@@ -28,3 +31,4 @@ export class BlogPost {
 
 }
 
+  
