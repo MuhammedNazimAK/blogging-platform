@@ -6,6 +6,7 @@ import cors from "cors";
 import { AppDataSource } from "./config/database";
 import authRoutes from "./routes/authRoutes";
 import blogPostRoutes from "./routes/blogPostRoutes";
+import commentRoutes from "./routes/commentRoutes";
 
 
 
@@ -30,6 +31,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use("/auth", authRoutes);
 app.use("/blogposts", blogPostRoutes);
+app.use("/comments", commentRoutes);
 
 
 AppDataSource.initialize().then(() => {

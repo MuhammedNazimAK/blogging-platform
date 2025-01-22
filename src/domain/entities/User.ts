@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToMany } from "typeorm";
 import { BlogPost } from "./BlogPost";
-
+import { Comment } from "./comment";
 
 
 @Entity("users")
@@ -24,6 +24,9 @@ export class User {
   @OneToMany(() => BlogPost, (blogPost) => blogPost.user)
   blogPosts: BlogPost[] | undefined;
 
+  @OneToMany(() => Comment, (comment) => comment.user)
+  comments: Comment[] | undefined;
+
   @CreateDateColumn()
   createdAt: Date | undefined;
 
@@ -31,5 +34,4 @@ export class User {
   updatedAt: Date | undefined;
   
 }
-
 

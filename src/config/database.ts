@@ -2,6 +2,7 @@ import { DataSource } from "typeorm";
 import { User } from "../domain/entities/User";
 import { config } from "dotenv";
 import { BlogPost } from "../domain/entities/BlogPost";
+import { Comment } from "../domain/entities/comment";
 config()
 
 
@@ -14,12 +15,8 @@ export const AppDataSource = new DataSource({
   database: process.env.DB_NAME,
   synchronize: true,
   logging: true,
-  entities: [User, BlogPost],
+  entities: [User, BlogPost, Comment],
   ssl: false,
-  extra: {
-    max: 25,
-    connectionTimeoutMillis: 10000,
-  }
 });
 
 

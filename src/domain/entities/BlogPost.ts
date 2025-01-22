@@ -1,5 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, OneToMany } from "typeorm";
 import { User } from "./User";
+import { Comment } from "./comment";
 
 
 @Entity("blog_posts")
@@ -8,7 +9,7 @@ export class BlogPost {
   @PrimaryGeneratedColumn("uuid")
   id: string | undefined;
 
-  @ManyToOne(() => User, (user) => user.blogPosts)
+  @ManyToOne(() => User, (user) => user.blogPosts, { eager: true })
   user: User | undefined;
 
   @Column("varchar")
@@ -19,6 +20,12 @@ export class BlogPost {
 
   @Column({ type: "varchar", nullable: true })
   imageUrl: string | undefined; 
+
+  @OneToMany(() => Comment, (comment) => comment.blogPost, { cascade: true })
+  comments: Comment[] | undefined;
+
+  @Column("int", { default: 0 })
+  commentCount: number | undefined
 
   @Column("varchar", { default: false })
   published: boolean | undefined;

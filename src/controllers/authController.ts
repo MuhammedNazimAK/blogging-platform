@@ -10,10 +10,6 @@ export const signupController = async (req: Request, res: Response) => {
 
     const { name, email, password } = req.body;
 
-    console.log("name", name);
-    console.log("email", email);
-    console.log("pass", password);
-
     const user = await signup(name, email, password);
 
     res.status(STATUS_CODES.CREATED).json({ message: "User created", user });
