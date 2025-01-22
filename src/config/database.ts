@@ -3,6 +3,7 @@ import { User } from "../domain/entities/User";
 import { config } from "dotenv";
 import { BlogPost } from "../domain/entities/BlogPost";
 import { Comment } from "../domain/entities/comment";
+import { Like } from "../domain/entities/Like";
 config()
 
 
@@ -15,7 +16,7 @@ export const AppDataSource = new DataSource({
   database: process.env.DB_NAME,
   synchronize: true,
   logging: true,
-  entities: [User, BlogPost, Comment],
+  entities: [User, BlogPost, Comment, Like],
   ssl: false,
 });
 

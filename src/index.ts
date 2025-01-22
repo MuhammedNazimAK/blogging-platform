@@ -7,6 +7,7 @@ import { AppDataSource } from "./config/database";
 import authRoutes from "./routes/authRoutes";
 import blogPostRoutes from "./routes/blogPostRoutes";
 import commentRoutes from "./routes/commentRoutes";
+import likeRoutes from "./routes/likeRoutes";
 
 
 
@@ -32,6 +33,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/auth", authRoutes);
 app.use("/blogposts", blogPostRoutes);
 app.use("/comments", commentRoutes);
+app.use("/likes", likeRoutes);
 
 
 AppDataSource.initialize().then(() => {
