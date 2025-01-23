@@ -2,6 +2,8 @@ import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateCol
 import { BlogPost } from "./BlogPost";
 import { Comment } from "./comment";
 import { Like } from "./Like";
+import { Bookmark } from "./Bookmark";
+
 
 
 @Entity("users")
@@ -30,6 +32,9 @@ export class User {
 
   @OneToMany(() => Like, (like) => like.user)
   likes!: Like[];
+
+  @OneToMany(() => Bookmark, (bookmark) => bookmark.user)
+  bookmarks!: Bookmark;
 
   @CreateDateColumn()
   createdAt: Date | undefined;

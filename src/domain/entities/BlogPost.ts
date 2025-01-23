@@ -2,6 +2,7 @@ import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateCol
 import { User } from "./User";
 import { Comment } from "./comment";
 import { Like } from "./Like";
+import { Bookmark } from "./Bookmark";
 
 
 @Entity("blog_posts")
@@ -26,12 +27,15 @@ export class BlogPost {
   comments: Comment[] | undefined;
 
   @OneToMany(() => Like, (like) => like.blogPost)
-  likes!: Like[]
+  likes!: Like[];
+
+  @OneToMany(() => Bookmark, (bookmark) => bookmark.blogPost)
+  bookmarks!: Bookmark;
 
   @Column("int", { default: 0 })
   commentCount: number | undefined
 
-  @Column("varchar", { default: false })
+  @Column("boolean", { default: false })
   published: boolean | undefined;
 
   @CreateDateColumn()
