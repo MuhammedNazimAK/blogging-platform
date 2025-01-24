@@ -56,7 +56,7 @@ export const updateBlogPost = async (id: string, title: string, content: string,
     if (blogPost.imageUrl) {
       const publicId = getPublicIdFromCloudinaryUrl(blogPost.imageUrl);
       if (publicId) {
-        await cloudinary.uploader.destroy(`blog_posts/${publicId}`); 
+        await cloudinary.uploader.destroy(`blog_posts/${publicId}`);
       }
     }
 
@@ -77,11 +77,11 @@ export const updateBlogPost = async (id: string, title: string, content: string,
 
 function getPublicIdFromCloudinaryUrl(imageUrl: string): string | null {
   const parts = imageUrl.split('/');
-  const publicIdIndex = parts.indexOf("blog_posts") + 1; 
+  const publicIdIndex = parts.indexOf("blog_posts") + 1;
   if (publicIdIndex > 0 && publicIdIndex < parts.length) {
     return parts[publicIdIndex].split('.')[0];
   }
-  return null; 
+  return null;
 }
 
 

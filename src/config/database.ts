@@ -5,6 +5,7 @@ import { BlogPost } from "../domain/entities/BlogPost";
 import { Comment } from "../domain/entities/comment";
 import { Like } from "../domain/entities/Like";
 import { Bookmark } from "../domain/entities/Bookmark";
+import { Notification } from "../domain/entities/Notification";
 config()
 
 
@@ -17,7 +18,7 @@ export const AppDataSource = new DataSource({
   database: process.env.DB_NAME,
   synchronize: true,
   logging: true,
-  entities: [User, BlogPost, Comment, Like, Bookmark],
+  entities: [User, BlogPost, Comment, Like, Bookmark, Notification],
   ssl: false,
 });
 
