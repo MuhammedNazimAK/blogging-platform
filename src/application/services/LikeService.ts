@@ -24,10 +24,11 @@ export const toggleLike = async (blogPostId: string, userId: string) => {
     }
   });
 
+  let message = "";
   if (existingLike) {
     await likeRepository.remove(existingLike);
 
-    return { message: "Unliked the post" };
+    message = "Unliked the post";
   } else {
 
     const like = new Like();
@@ -35,8 +36,9 @@ export const toggleLike = async (blogPostId: string, userId: string) => {
     like.user = user;
 
     await likeRepository.save(like);
-    return { message: "Liked the post" }
+    message = "Liked the post";
   }
+
 }
 
 

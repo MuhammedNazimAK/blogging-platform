@@ -1,5 +1,5 @@
 import { Response } from "express";
-import { createBlogPost, getBlogPosts, updateBlogPost, deleteBlogPost } from "../application/services/BlogPostService";
+import { createBlogPost, getBlogPosts, getBlogPostById, updateBlogPost, deleteBlogPost } from "../application/services/BlogPostService";
 import { RequestWithUser } from "../middlewares/authMiddleware";
 import STATUS_CODES from "../shared/constants/statusCodes";
 import { UploadedFile } from "express-fileupload";
@@ -40,6 +40,22 @@ export const getBlogPostsController = async (req: RequestWithUser, res: Response
     res.status(STATUS_CODES.INTERNAL_SERVER_SERVER).json({ message: (error as Error).message });
   }
 }
+
+
+export const getBlogPostByIdController = async (req: RequestWithUser, res: Response) => {
+  try {
+    const { blogPostId } = req.params;
+    const blogPost = await getBlogPostById(blogPostId); 
+
+    if (!blogPost) {
+      return res.status(STATUS_CODES.NOT_FOUND).json({ message: "Blog post not found" });
+    }
+
+    res.status(STATUS_CODES.OK).json(blogPost);
+  } catch (error) {
+    res.status(STATUS_CODES.INTERNAL_SERVER_SERVER).json({ message: (error as Error).message });
+  }
+};
 
 
 

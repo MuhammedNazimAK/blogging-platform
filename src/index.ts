@@ -13,8 +13,10 @@ import searchRoutes from "./routes/searchRoutes";
 import bookmarkRoutes from "./routes/BookmarkRoutes";
 
 
+
 const app = express();
 
+app.use(cors());
 
 app.use(
   fileUpload({
@@ -26,27 +28,26 @@ app.use(
 );
 
 
-app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 
 app.use("/auth", authRoutes);
-app.use("/blogposts", blogPostRoutes);
+app.use("/blogs", blogPostRoutes);
 app.use("/comments", commentRoutes);
 app.use("/likes", likeRoutes);
 app.use("/search", searchRoutes);
 app.use("/bookmarks", bookmarkRoutes);
 
 
-
 AppDataSource.initialize().then(async () => {
   await initializeSearch();
   console.log("Database connected");
 
-  app.listen(process.env.PORT, () => {
+ app.listen(process.env.PORT, () => {
     console.log(`Server running on port ${process.env.PORT}`);
   });
-  
+
 }).catch(error => console.log(error));
+
 

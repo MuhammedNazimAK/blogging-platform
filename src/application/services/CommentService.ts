@@ -4,6 +4,7 @@ import { Comment } from "../../domain/entities/comment";
 import { User } from "../../domain/entities/User";
 
 
+
 const commentRepository = AppDataSource.getRepository(Comment);
 
 
@@ -25,8 +26,9 @@ export const addComment = async (content: string, blogPostId: string, userId: st
 
   await blogPostRepository.increment({ id: blogPostId }, "commentCount", 1);
 
-  return commentRepository.save(comment);
+  await commentRepository.save(comment);
 
+  return comment;
 }
 
 

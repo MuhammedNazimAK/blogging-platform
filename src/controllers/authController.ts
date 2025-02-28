@@ -22,10 +22,12 @@ export const signupController = async (req: Request, res: Response) => {
 
 
 export const loginController = async (req: Request, res: Response) => {
+
   try {
 
     const { email, password } = req.body;
     const { user, token } = await login(email, password);
+
     res.status(STATUS_CODES.OK).json({ user, token });
 
   } catch (error) {

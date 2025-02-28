@@ -3,7 +3,6 @@ import { BlogPost } from "./BlogPost";
 import { Comment } from "./comment";
 import { Like } from "./Like";
 import { Bookmark } from "./Bookmark";
-import { Notification } from "./Notification";
 
 
 
@@ -36,9 +35,6 @@ export class User {
 
   @OneToMany(() => Bookmark, (bookmark) => bookmark.user)
   bookmarks!: Bookmark;
-
-  @OneToMany(() => Notification, (notification) => notification.recipient)
-  notifications!: Notification[];
 
   @CreateDateColumn()
   createdAt: Date | undefined;

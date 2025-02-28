@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import STATUS_CODES from "../shared/constants/statusCodes";
 
 export interface RequestWithUser extends Request {
-  user?: any
+  user?: any;
 }
 
 export const authMiddleware = (req: RequestWithUser, res: Response, next: NextFunction) => {

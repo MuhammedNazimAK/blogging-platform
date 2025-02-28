@@ -44,6 +44,19 @@ export const getBlogPosts = async () => {
   return blogPostRepository.find({ relations: ["user"] });
 };
 
+export const getBlogPostById = async (blogPostId: string) => {
+  const blogPost = await blogPostRepository.findOne({
+    where: { id: blogPostId },
+    relations: ["user"]
+  });
+
+  if (!blogPost) {
+    throw new Error("Blog post not found");
+  }
+
+  return blogPost;
+};
+
 
 
 export const updateBlogPost = async (id: string, title: string, content: string, image: UploadedFile | null) => {

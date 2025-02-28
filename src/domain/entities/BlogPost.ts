@@ -12,7 +12,7 @@ export class BlogPost {
   id: string | undefined;
 
   @ManyToOne(() => User, (user) => user.blogPosts, { eager: true })
-  user: User | undefined;
+  user!: User;
 
   @Column("varchar")
   title: string | undefined;
