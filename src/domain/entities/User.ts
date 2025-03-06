@@ -15,11 +15,11 @@ export class User {
   @Column("varchar")
   name: string | undefined;
 
-  @Column("varchar")
-  email: string | undefined;
+  @Column({type:"varchar", unique: true, nullable: false })
+  email!: string;
 
-  @Column("text")
-  password: string | undefined;
+  @Column({type:"varchar", length: 60 })
+  password!: string;
 
   @Column("varchar", { default: "user" })
   role: string | undefined;

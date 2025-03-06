@@ -3,11 +3,12 @@ import { createBlogPost, getBlogPosts, getBlogPostById, updateBlogPost, deleteBl
 import { RequestWithUser } from "../middlewares/authMiddleware";
 import STATUS_CODES from "../shared/constants/statusCodes";
 import { UploadedFile } from "express-fileupload";
+import asyncHandler from "../utils/asyncHandler";
 
 
 
-export const createBlogPostController = async (req: RequestWithUser, res: Response) => {
-  try {
+
+export const createBlogPostController = asyncHandler (async (req: RequestWithUser, res: Response) => {
 
     const { title, content } = req.body;
     const userId = req.user.id;
@@ -22,45 +23,38 @@ export const createBlogPostController = async (req: RequestWithUser, res: Respon
     
     res.status(STATUS_CODES.CREATED).json({ message: "Blog post created", blogPost });
 
-  } catch (error) {
-
-    res.status(STATUS_CODES.BAD_REQUEST).json({ messge: (error as Error).message });
-  }
-}
+})
 
 
 
-export const getBlogPostsController = async (req: RequestWithUser, res: Response) => {
-  try {
+export const getBlogPostsController = asyncHandler (async (req: RequestWithUser, res: Response) => {
+
     const blogPosts = await getBlogPosts();
     
     res.status(STATUS_CODES.OK).json(blogPosts)
-  } catch (error) {
 
-    res.status(STATUS_CODES.INTERNAL_SERVER_SERVER).json({ message: (error as Error).message });
-  }
-}
+})
 
 
-export const getBlogPostByIdController = async (req: RequestWithUser, res: Response) => {
-  try {
+
+export const getBlogPostByIdController = asyncHandler (async (req: RequestWithUser, res: Response) => {
+
     const { blogPostId } = req.params;
     const blogPost = await getBlogPostById(blogPostId); 
 
     if (!blogPost) {
-      return res.status(STATUS_CODES.NOT_FOUND).json({ message: "Blog post not found" });
+      res.status(STATUS_CODES.NOT_FOUND).json({ message: "Blog post not found" });
+      return;
     }
 
     res.status(STATUS_CODES.OK).json(blogPost);
-  } catch (error) {
-    res.status(STATUS_CODES.INTERNAL_SERVER_SERVER).json({ message: (error as Error).message });
-  }
-};
+ 
+})
 
 
 
-export const updateBlogPostController = async (req: RequestWithUser, res: Response) => {
-  try {
+export const updateBlogPostController = asyncHandler (async (req: RequestWithUser, res: Response) => {
+
     const { id } = req.params;
     const { title, content } = req.body;
 
@@ -69,26 +63,18 @@ export const updateBlogPostController = async (req: RequestWithUser, res: Respon
     
     res.status(STATUS_CODES.OK).json({ message: "Blog post updated", blogPost });
 
-  } catch (error) { 
-      
-    res.status(STATUS_CODES.BAD_REQUEST).json({ message: (error as Error).message });
-  }
-}
+})
 
 
 
-export const deleteBlogPostController = async (req: RequestWithUser, res: Response) => {
-  try {
+export const deleteBlogPostController = asyncHandler (async (req: RequestWithUser, res: Response) => {
 
     const { id } = req.params;
     await deleteBlogPost(id);
 
     res.status(STATUS_CODES.OK).json({ message: "Blog post deleted" });
-  }  catch (error) {
-    
-    res.status(STATUS_CODES.BAD_REQUEST).json({ message: (error as Error).message });
-  }
-}
+
+})
 
 
 

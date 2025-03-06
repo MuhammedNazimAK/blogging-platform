@@ -2,10 +2,13 @@ import { Response } from "express";
 import { addComment, getCommentsByBlogPost, deleteComment } from "../application/services/CommentService";
 import { RequestWithUser } from "../middlewares/authMiddleware";
 import STATUS_CODES from "../shared/constants/statusCodes";
+import asyncHandler from "../utils/asyncHandler";
 
 
-export const addCommentController = async (req: RequestWithUser, res: Response) => {
-  try {
+
+
+export const addCommentController = asyncHandler (async (req: RequestWithUser, res: Response) => {
+
     const { content, blogPostId } = req.body;
     const userId = req.user.id;
 
@@ -20,30 +23,23 @@ export const addCommentController = async (req: RequestWithUser, res: Response) 
 
     res.status(STATUS_CODES.CREATED).json({ message: "Comment added", comment: formattedComment });
 
-  } catch (err) {
-
-    res.status(STATUS_CODES.BAD_REQUEST).json({ message: (err as Error).message })
-  }
-}
+})
 
 
-export const getCommentsByBlogPostController = async (req: RequestWithUser, res: Response) => {
-  try {
+
+export const getCommentsByBlogPostController = asyncHandler (async (req: RequestWithUser, res: Response) => {
+
     const { blogPostId } = req.params;
     const comments = await getCommentsByBlogPost(blogPostId);
     
     res.status(STATUS_CODES.OK).json(comments);
 
-  } catch (err) {
-
-    res.status(STATUS_CODES.BAD_REQUEST).json({ message: (err as Error).message });
-  }
-}
+})
 
 
 
-export const deleteCommentController = async (req: RequestWithUser, res: Response) => {
-  try {
+export const deleteCommentController = asyncHandler (async (req: RequestWithUser, res: Response) => {
+
     const { commentId } = req.params;
     const userId = req.user.id;
 
@@ -51,10 +47,6 @@ export const deleteCommentController = async (req: RequestWithUser, res: Respons
 
     res.status(STATUS_CODES.OK).json({ message: "Comment deleted successfully." });
 
-  } catch (err) {
-
-    res.status(STATUS_CODES.BAD_REQUEST).json({ message: (err as Error).message });
-  }
-}
+})
 
 

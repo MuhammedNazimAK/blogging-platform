@@ -11,6 +11,7 @@ import commentRoutes from "./routes/commentRoutes";
 import likeRoutes from "./routes/likeRoutes";
 import searchRoutes from "./routes/searchRoutes";
 import bookmarkRoutes from "./routes/BookmarkRoutes";
+import errorMiddleware from './middlewares/errorMiddleware';
 
 
 
@@ -38,6 +39,8 @@ app.use("/comments", commentRoutes);
 app.use("/likes", likeRoutes);
 app.use("/search", searchRoutes);
 app.use("/bookmarks", bookmarkRoutes);
+
+app.use(errorMiddleware);
 
 
 AppDataSource.initialize().then(async () => {
