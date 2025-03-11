@@ -27,8 +27,6 @@ export const createBlogPost = async (title: string, content: string, userId: str
     imageUrl = uploadResponse.secure_url;
   }
 
-  console.log("imageUrl", imageUrl);
-
   const blogPost = new BlogPost();
   blogPost.title = title;
   blogPost.content = content;
@@ -40,9 +38,12 @@ export const createBlogPost = async (title: string, content: string, userId: str
 }
 
 
+
 export const getBlogPosts = async () => {
   return blogPostRepository.find({ relations: ["user"] });
 };
+
+
 
 export const getBlogPostById = async (blogPostId: string) => {
   const blogPost = await blogPostRepository.findOne({
@@ -86,6 +87,7 @@ export const updateBlogPost = async (id: string, title: string, content: string,
   return blogPostRepository.save(blogPost);
 
 };
+
 
 
 function getPublicIdFromCloudinaryUrl(imageUrl: string): string | null {

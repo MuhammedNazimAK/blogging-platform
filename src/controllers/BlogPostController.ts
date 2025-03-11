@@ -11,6 +11,7 @@ import asyncHandler from "../utils/asyncHandler";
 export const createBlogPostController = asyncHandler (async (req: RequestWithUser, res: Response) => {
 
     const { title, content } = req.body;
+
     const userId = req.user.id;
 
     if (!req.files || !req.files.image) {

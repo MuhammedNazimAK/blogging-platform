@@ -23,7 +23,7 @@ export const signup = async (name: string, email: string, password: string) => {
 
 
 export const login = async (email: string, password: string) => {
-  
+
   console.log('email of the user', email)
   console.log("passoword", password)
 

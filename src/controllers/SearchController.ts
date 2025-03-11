@@ -20,6 +20,6 @@ export const searchController = asyncHandler (async (req: RequestWithUser, res: 
 
     res.status(STATUS_CODES.OK).json(blogPosts);
 
-})
+});
 
 

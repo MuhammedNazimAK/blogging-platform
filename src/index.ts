@@ -17,7 +17,17 @@ import errorMiddleware from './middlewares/errorMiddleware';
 
 const app = express();
 
-app.use(cors());
+
+const corsOptions = {
+  origin: 'http://localhost:4200',
+  credentials: true,
+  allowedHeaders: ['Content-Type', 'Authorization'],
+};
+
+
+app.use(cors(corsOptions));
+app.options('/blogs', cors(corsOptions));
+
 
 app.use(
   fileUpload({

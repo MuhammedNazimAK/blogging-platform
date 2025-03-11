@@ -19,6 +19,7 @@ export const authMiddleware = (req: RequestWithUser, res: Response, next: NextFu
 
   (req as RequestWithUser).user = decoded;
   next();
+  
  } catch (err) {
   res.status(STATUS_CODES.UNAUTHORIZED).json({ message: "Invalid token" });
   return;
