@@ -10,21 +10,17 @@ import asyncHandler from "../utils/asyncHandler";
 
 export const createBlogPostController = asyncHandler (async (req: RequestWithUser, res: Response) => {
 
-    const { title, content } = req.body;
+    const { title, content, excerpt } = req.body;
+    console.log("blog", req.body)
 
     const userId = req.user.id;
 
-    if (!req.files || !req.files.image) {
-      res.status(STATUS_CODES.BAD_REQUEST).json({ message: "Image is required." });
-      return;
-    }
-
     const image = req.files?.image as UploadedFile | null;
-    const blogPost = await createBlogPost(title, content, userId, image);
-    
+    const blogPost = await createBlogPost({ title, content, excerpt, image, userId });
+
     res.status(STATUS_CODES.CREATED).json({ message: "Blog post created", blogPost });
 
-})
+});
 
 
 
@@ -40,8 +36,8 @@ export const getBlogPostsController = asyncHandler (async (req: RequestWithUser,
 
 export const getBlogPostByIdController = asyncHandler (async (req: RequestWithUser, res: Response) => {
 
-    const { blogPostId } = req.params;
-    const blogPost = await getBlogPostById(blogPostId); 
+    const { id } = req.params;
+    const blogPost = await getBlogPostById(id); 
 
     if (!blogPost) {
       res.status(STATUS_CODES.NOT_FOUND).json({ message: "Blog post not found" });

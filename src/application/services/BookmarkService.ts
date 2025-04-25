@@ -64,3 +64,13 @@ export const getBookmarksForUser = async (userId: string) => {
 
   return bookmarks.map((bookmark) => bookmark.blogPost);
 };
+
+
+
+export async function checkUserBookmarked(blogPostId: string, userId: string): Promise<boolean> {
+  const bookmark = await bookmarkRepository.findOne({ 
+      where: { blogPost: { id: blogPostId },
+               user: { id: userId } } 
+  });
+  return !!bookmark;
+}

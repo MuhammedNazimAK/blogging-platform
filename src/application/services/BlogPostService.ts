@@ -3,22 +3,23 @@ import { AppDataSource } from "../../config/database";
 import { BlogPost } from "../../domain/entities/BlogPost";
 import { User } from "../../domain/entities/User";
 import { UploadedFile } from "express-fileupload";
+import { CreateBlogPostDTO, BlogPostResponse } from "../../interfaces/blogPost";
 
 
 const blogPostRepository = AppDataSource.getRepository(BlogPost);
 
 
-export const createBlogPost = async (title: string, content: string, userId: string, image: UploadedFile | null) => {
+export const createBlogPost = async (blogPostData: CreateBlogPostDTO): Promise<BlogPostResponse> => {
 
   const userRepository = AppDataSource.getRepository(User);
-  const user = await userRepository.findOneBy({ id: userId });
+  const user = await userRepository.findOneBy({ id: blogPostData.userId });
 
   if (!user) throw new Error("User not found");
 
   let imageUrl: string = "";
 
-  if (image) {
-    const uploadResponse = await cloudinary.uploader.upload(image.tempFilePath, {
+  if (blogPostData.image) {
+    const uploadResponse = await cloudinary.uploader.upload(blogPostData.image.tempFilePath, {
       folder: "blog_posts",
       fetch_format: 'auto',
       quality: 'auto',
@@ -27,13 +28,39 @@ export const createBlogPost = async (title: string, content: string, userId: str
     imageUrl = uploadResponse.secure_url;
   }
 
-  const blogPost = new BlogPost();
-  blogPost.title = title;
-  blogPost.content = content;
-  blogPost.user = user;
-  blogPost.imageUrl = imageUrl;
+  const words = blogPostData.content.split(/\s+/).length;
+  const readTime = Math.ceil(words / 200);
 
-  return blogPostRepository.save(blogPost);
+  const blogPost = new BlogPost();
+  blogPost.title = blogPostData.title;
+  blogPost.content = blogPostData.content;
+  blogPost.excerpt = blogPostData.excerpt || '';
+  blogPost.imageUrl = imageUrl;
+  blogPost.user = user;
+  blogPost.readTime = readTime;
+  blogPost.createdAt = new Date();
+
+  const savedBlogPost = await blogPostRepository.save(blogPost);
+
+  const response: BlogPostResponse = {
+    id: savedBlogPost.id || '',
+    title: savedBlogPost.title || '',
+    content: savedBlogPost.content || '',
+    excerpt: savedBlogPost.excerpt || "",    imageUrl: savedBlogPost.imageUrl || '',
+    author: {
+      id: user.id || '',
+      name: user.name || '',
+    },
+    createdAt: savedBlogPost.createdAt || new Date(),
+    updatedAt: savedBlogPost.updatedAt || new Date(),
+    publishedAt: savedBlogPost.createdAt || new Date(),
+    published: savedBlogPost.published || false,
+    readTime: savedBlogPost.readTime,
+    likes: savedBlogPost.likes?.length,
+    views: savedBlogPost.views,
+  };
+
+  return response;
 
 }
 

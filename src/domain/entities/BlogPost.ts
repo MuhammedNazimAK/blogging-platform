@@ -20,8 +20,14 @@ export class BlogPost {
   @Column("text")
   content: string | undefined;
 
+  @Column({ nullable: true })
+  excerpt!: string;
+
   @Column({ type: "varchar", nullable: true })
   imageUrl: string | undefined; 
+
+  @Column({ nullable: true })
+  readTime!: number;
 
   @OneToMany(() => Comment, (comment) => comment.blogPost, { cascade: true })
   comments: Comment[] | undefined;
@@ -33,7 +39,10 @@ export class BlogPost {
   bookmarks!: Bookmark;
 
   @Column("int", { default: 0 })
-  commentCount: number | undefined
+  commentCount: number | undefined;
+
+  @Column({ default: 0 })
+  views!: number;
 
   @Column("boolean", { default: false })
   published: boolean | undefined;

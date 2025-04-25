@@ -1,14 +1,15 @@
 import { Router } from "express";
-import { toggleBookmarkController, getUserBookmarksController, deleteBookmakController } from "../controllers/BookmarkController";
+import { toggleBookmarkController, getUserBookmarksController, deleteBookmarkController, checkUserBookmarkedController } from "../controllers/BookmarkController";
 import { authMiddleware } from "../middlewares/authMiddleware";
-
 
 const router = Router();
 
+router.post("/:blogPostId/bookmarks", authMiddleware, toggleBookmarkController);
 
-router.post("/", authMiddleware, toggleBookmarkController);
-router.delete("/:blogPostId", authMiddleware, deleteBookmakController);
+router.delete("/:blogPostId/bookmarks", authMiddleware, deleteBookmarkController);
+
 router.get("/", authMiddleware, getUserBookmarksController);
 
-export default router;
+router.get("/:blogPostId/bookmarks/check", authMiddleware, checkUserBookmarkedController);
 
+export default router;

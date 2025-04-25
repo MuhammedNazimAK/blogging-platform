@@ -51,3 +51,11 @@ export const getLikesCount = async (blogPostId: string) => {
 }
 
 
+export async function checkUserLiked(blogPostId: string, userId: string): Promise<boolean> {
+  const like = await likeRepository.findOne({ 
+      where: { blogPost: { id: blogPostId }, 
+      user: { id: userId }} 
+  });
+  return !!like;
+}
+

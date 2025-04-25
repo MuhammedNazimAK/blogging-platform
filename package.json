@@ -34,8 +34,6 @@
     "jsonwebtoken": "^9.0.2",
     "pg": "^8.13.1",
     "reflect-metadata": "^0.2.2",
-    "socket.io": "^4.8.1",
-    "typeorm": "^0.3.20",
-    "ws": "^8.18.0"
+    "typeorm": "^0.3.20"
   }
 }
