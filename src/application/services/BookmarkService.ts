@@ -21,10 +21,8 @@ export const toggleBookmark = async (blogPostId: string, userId: string) => {
   const existingBookmark = await bookmarkRepository.findOneBy({ blogPost, user });
 
   if (existingBookmark) {
-    console.log("Found existing bookmark, removing..."); 
 
     await bookmarkRepository.remove(existingBookmark);
-    console.log("Bookmark removed"); 
 
     return { message: "Bookmark removed" };
   } else {
@@ -35,7 +33,6 @@ export const toggleBookmark = async (blogPostId: string, userId: string) => {
     bookmark.user = user;
 
     await bookmarkRepository.save(bookmark);
-    console.log("Bookmark added"); 
 
     return { message: "Bookmark added" };
   }

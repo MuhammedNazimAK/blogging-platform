@@ -16,7 +16,7 @@ export const initializeSearch = async () => {
     if (post.title && post.id) {
 
       const postId = post.id;
-      const words = post.title.toLowerCase().split(" ");
+      const words = post.title.toLowerCase().split(/\W+/).filter(w => w.length > 0);
 
       words.forEach(word => {
         
@@ -32,13 +32,16 @@ export const initializeSearch = async () => {
 
   
 export const searchBlogPosts = async (prefix: string) => {
-  const blogPostIds = trie.search(prefix);
-  const blogposts = await blogPostRepository.findBy({
-    id: In(blogPostIds)
-  });
 
-  return blogposts;
-}
+  const term = prefix.trim().toLowerCase();
+
+  if (term.length < 2) return [];
+
+  const ids = trie.search(term);
+  if (ids.length === 0) return [];
+
+  return blogPostRepository.findBy({ id: In(ids) });
+};
 
 
 

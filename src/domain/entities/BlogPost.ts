@@ -36,7 +36,7 @@ export class BlogPost {
   likes!: Like[];
 
   @OneToMany(() => Bookmark, (bookmark) => bookmark.blogPost)
-  bookmarks!: Bookmark;
+  bookmarks!: Bookmark[];
 
   @Column("int", { default: 0 })
   commentCount: number | undefined;

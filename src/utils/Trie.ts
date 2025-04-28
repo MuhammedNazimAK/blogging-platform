@@ -1,62 +1,64 @@
 class TrieNode {
-  children: Map<string, TrieNode>;
-  isEndOfWord: boolean;
-  blogPostIds: string[];
+  children: Map<string, TrieNode> = new Map();
+  isEndOfWord: boolean = false;
+  blogPostIds: Set<string> = new Set();
 
-  constructor () {
-    this.children = new Map();
-    this.isEndOfWord = false;
-    this.blogPostIds = [];
+  constructor() {
+
   }
 }
 
-
 export class Trie {
-  private root: TrieNode;
+  private root = new TrieNode();
 
-  constructor () {
-    this.root = new TrieNode();
-  }
+  insert(word: string, blogPostId: string): void {
 
-  insert (title: string, blogPostId: string): void {
     let node = this.root;
-    for (const char of title.toLowerCase()) {
+
+    for (const char of word.toLowerCase()) {
+
       if (!node.children.has(char)) {
         node.children.set(char, new TrieNode());
       }
-      
-      node = node.children.get(char) as TrieNode;
+      node = node.children.get(char)!;
     }
 
     node.isEndOfWord = true;
-    node.blogPostIds.push(blogPostId);
+    node.blogPostIds.add(blogPostId);
   }
 
   search(prefix: string): string[] {
-    
+
+    const term = prefix.toLowerCase().trim();
     let node = this.root;
-    for (const char of prefix.toLowerCase()) {
+
+    for (const char of term) {
       if (!node.children.has(char)) {
         return [];
       }
-
-      node = node.children.get(char) as TrieNode;
+      node = node.children.get(char)!;
     }
 
-    return this.collectAllBlogPostIds(node);
+    return Array.from(this.collectAllIds(node));
   }
 
-  private collectAllBlogPostIds(node: TrieNode): string[] {
-    const result: string[] = [];
+  // Recursively collect IDs into a Set to avoid duplicates
+  private collectAllIds(node: TrieNode): Set<string> {
+    
+    const ids = new Set<string>();
 
     if (node.isEndOfWord) {
-      result.push(...node.blogPostIds);
+      for (const id of node.blogPostIds) {
+        ids.add(id);
+      }
     }
 
-    for (const childNode of node.children.values()) {
-      result.push(...this.collectAllBlogPostIds(childNode));
+    for (const child of node.children.values()) {
+      for (const id of this.collectAllIds(child)) {
+        ids.add(id);
+      }
     }
 
-    return result;
+    return ids;
   }
 }

@@ -8,9 +8,6 @@ const userRepository = AppDataSource.getRepository(User);
 
 export const signup = async (name: string, email: string, password: string) => {
 
-  console.log('sign user mail', email);
-  console.log('sign user pass', password);
-
   const hashedPassword = await bcrypt.hash(password, 10);
 
   const user = new User();
@@ -24,16 +21,11 @@ export const signup = async (name: string, email: string, password: string) => {
 
 export const login = async (email: string, password: string) => {
 
-  console.log('email of the user', email)
-  console.log("passoword", password)
-
   const user = await userRepository.findOneBy({ email });
 
   if (!user) throw new Error("User not found");
 
   const isPasswordValid = await bcrypt.compare(password, user.password!);
-
-  console.log("password", isPasswordValid)
 
   if (!isPasswordValid) throw new Error("Invalid password");
 
@@ -42,8 +34,6 @@ export const login = async (email: string, password: string) => {
     process.env.jwt_SECTRET!,
     { expiresIn: "1h" }
   );
-
-  console.log("user", user);
 
   return { user, token };
 }

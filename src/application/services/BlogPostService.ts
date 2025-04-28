@@ -116,7 +116,6 @@ export const updateBlogPost = async (id: string, title: string, content: string,
 };
 
 
-
 function getPublicIdFromCloudinaryUrl(imageUrl: string): string | null {
   const parts = imageUrl.split('/');
   const publicIdIndex = parts.indexOf("blog_posts") + 1;

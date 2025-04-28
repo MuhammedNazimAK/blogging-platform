@@ -9,14 +9,14 @@ import asyncHandler from "../utils/asyncHandler";
 
 export const searchController = asyncHandler (async (req: RequestWithUser, res: Response) => {
 
-    const { query } = req.query; 
+    const { q } = req.query; 
 
-    if (!query || typeof query !== 'string') { 
+    if (!q || typeof q !== 'string') { 
       res.status(STATUS_CODES.BAD_REQUEST).json({ message: "Query is required" });
       return;
     }
 
-    const blogPosts = await searchBlogPosts(query as string);
+    const blogPosts = await searchBlogPosts(q as string);
 
     res.status(STATUS_CODES.OK).json(blogPosts);
 
